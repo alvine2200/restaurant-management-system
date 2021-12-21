@@ -4,12 +4,22 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
+use App\Models\Food;
+use App\Models\Reservation;
+use App\Models\Chefs;
+
+
 
 class HomeController extends Controller
 {
     public function index(){
 
-        return view('home');
+        $data=food::all(); 
+
+        $chefdata=chefs::all(); 
+
+        return view('home', compact("data","chefdata"));
     }
 
     public function redirects(){
@@ -22,7 +32,41 @@ class HomeController extends Controller
         }
 
         else{
-            return view('user.home');
+            
+            $data=food::all();
+            return view('home', compact('data'));
         }
     }
+
+    public function reservation(Request $request){
+
+
+        $data= new reservation;
+
+        $data->name=$request->name;
+
+        $data->email=$request->email;
+
+        $data->phone=$request->phone;
+
+        $data->guest=$request->guest;
+
+        $data->date=$request->date;
+
+        $data->time=$request->time;
+
+        $data->message=$request->message;
+
+        $data->save();
+
+
+        return redirect()->back()->with('message','Reservation successfully Made');
+
+
+
+    }
+
+
+
+
 }
